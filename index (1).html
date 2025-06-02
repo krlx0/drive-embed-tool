@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Drive Embed Tool</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #f9f9f9;
+      color: #333;
+      transition: background-color 0.3s, color 0.3s;
+    }
+    .dark-mode {
+      background-color: #121212;
+      color: #f1f1f1;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+    }
+    textarea, input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 1em;
+    }
+    iframe {
+      margin-top: 20px;
+      width: 100%;
+      height: 400px;
+    }
+    button {
+      margin-top: 10px;
+      padding: 10px 15px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    .info-box {
+      background-color: #fffae5;
+      padding: 10px;
+      border-left: 5px solid #ffc107;
+      margin-top: 15px;
+    }
+    .dark-mode .info-box {
+      background-color: #2a2a2a;
+      border-left: 5px solid #ffca28;
+    }
+    .switch {
+      float: right;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📁 Google Drive Embed Tool</h1>
+    <label for="driveLink">Paste your Google Drive link here:</label>
+    <input type="text" id="driveLink" placeholder="https://drive.google.com/file/d/.../view?usp=sharing" />
+    <button onclick="generateEmbed()">Generate Embed Code</button>
+    <button onclick="copyEmbedCode()">📋 Copy Code</button>
+    <button onclick="toggleDarkMode()" class="switch">🌙 Toggle Dark Mode</button>
+
+    <div class="info-box">
+      ⚠️ Make sure your file is <strong>public</strong> or set to "Anyone with the link can view", otherwise it won't load.
+    </div>
+
+    <label for="embedCode">Generated Embed Code:</label>
+    <textarea id="embedCode" rows="4" readonly></textarea>
+
+    <h2>🔍 Live Preview</h2>
+    <div id="preview"></div>
+
+    <h2>📘 What is this tool?</h2>
+    <p>This tool helps you convert Google Drive file links into embed-ready iframe code that you can use on your website or blog.</p>
+
+    <h3>Supported File Types:</h3>
+    <ul>
+      <li>📹 Videos</li>
+      <li>📄 PDFs</li>
+      <li>📊 Google Sheets</li>
+      <li>📝 Google Docs</li>
+      <li>📁 Folders (Read-Only View)</li>
+    </ul>
+  </div>
+
+  <script>
+    function generateEmbed() {
+      const input = document.getElementById("driveLink").value.trim();
+      const match = input.match(/\/d\/([\w-]+)/);
+      const embedBox = document.getElementById("embedCode");
+      const previewBox = document.getElementById("preview");
+
+      if (match && match[1]) {
+        const fileId = match[1];
+        const embedCode = `<iframe src="https://drive.google.com/file/d/${fileId}/preview" width="640" height="480" allow="autoplay"></iframe>`;
+        embedBox.value = embedCode;
+        previewBox.innerHTML = embedCode;
+      } else {
+        embedBox.value = "Invalid link. Please enter a valid Google Drive file link.";
+        previewBox.innerHTML = "";
+      }
+    }
+
+    function copyEmbedCode() {
+      const embedBox = document.getElementById("embedCode");
+      embedBox.select();
+      embedBox.setSelectionRange(0, 99999);
+      document.execCommand("copy");
+      alert("Embed code copied to clipboard!");
+    }
+
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+  </script>
+</body>
+</html>
