@@ -35,5 +35,39 @@
       background-color: #007bff;
       color: white;
       border: none;
-      margin
-added main website file
+      margin-top: 1rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>Google Drive Iframe Generator</h1>
+
+  <label for="driveLink">Paste Google Drive link:</label>
+  <input type="text" id="driveLink" placeholder="https://drive.google.com/file/d/FILE_ID/view?usp=sharing" />
+
+  <button onclick="generateIframe()">Generate Embed Code</button>
+
+  <label for="embedCode">Generated Iframe Code:</label>
+  <textarea id="embedCode" readonly></textarea>
+
+  <script>
+    function generateIframe() {
+      const input = document.getElementById('driveLink').value.trim();
+      const match = input.match(/\/file\/d\/([^\/]+)\//);
+
+      if (!match || match.length < 2) {
+        alert("Invalid Google Drive link format!");
+        return;
+      }
+
+      const fileId = match[1];
+      const iframeCode = `<iframe src="https://drive.google.com/file/d/${fileId}/preview" width="640" height="480" allow="autoplay"></iframe>`;
+      document.getElementById('embedCode').value = iframeCode;
+    }
+  </script>
+</body>
+</html>
